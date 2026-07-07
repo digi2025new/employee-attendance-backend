@@ -41,6 +41,25 @@ def login(
         Employee.email == form_data.username
     ).first()
 
+    print("\n========== LOGIN DEBUG ==========")
+    print("Email Entered :", form_data.username)
+
+    if employee:
+        print("Employee Found :", employee.email)
+        print("Employee ID    :", employee.employee_id)
+        print("Password Entered :", form_data.password)
+        print("Password Hash :", employee.password)
+
+        verify = verify_password(
+            form_data.password,
+            employee.password
+        )
+
+        print("Password Verify :", verify)
+
+    else:
+        print("Employee NOT FOUND")
+
     if not employee:
         raise HTTPException(
             status_code=401,
@@ -66,14 +85,14 @@ def login(
     )
 
     return {
-    "access_token": token,
-    "token_type": "bearer",
-    "employee_id": employee.employee_id,
-    "name": employee.name,
-    "email": employee.email,
-    "is_admin": employee.is_admin,
-    "must_change_password": employee.must_change_password
-}
+        "access_token": token,
+        "token_type": "bearer",
+        "employee_id": employee.employee_id,
+        "name": employee.name,
+        "email": employee.email,
+        "is_admin": employee.is_admin,
+        "must_change_password": employee.must_change_password
+    }
 
 
 # =========================
